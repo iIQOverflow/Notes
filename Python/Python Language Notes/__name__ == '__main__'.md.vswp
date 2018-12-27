@@ -1,0 +1,6 @@
+vnote_backup_file_826537664 C:/Users/90388/OneDrive/git_repository/Notes/Python/Python Language Notes/__name__ == '__main__'.md
+# __name__ == '__main__'
+
+__name__是当前模块名，当模块被直接运行时模块名为__main__。
+当模块被直接运行时，以下代码将被运行，当模块是被导入时，代码块不被运行
+![](_v_images/20181227200554490_21731.png)
