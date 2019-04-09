@@ -1,0 +1,187 @@
+vnote_backup_file_826537664 C:/Users/90388/OneDrive/git_repository/Notes/Java/Java Language/继承.md
+# 继承
+## super与this
+super
+* 调用父类中的方法。
+* 调用父类的构造函数。
+this
+* 隐式参数的引用。
+* 调用相同类中的另一个构造方法。
+**注意：构造函数的调用只能出现在其他构造函数的第一条语句。**
+## 多态
+```java
+e = new Employee(. . .); // Employee object expected
+e = new Manager(. . .); // OK, Manager can be used as well
+```
+下面的staff[0]的声明类型为`Employee`，`setBonus`方法不是`Employee`类中的方法。
+```java
+Manager boss = new Manager(. . .);
+Employee[] staff = new Employee[3];
+staff[0] = boss;
+boss.setBonus(5000); // OK
+staff[0].setBonus(5000); // ERROR
+```
+下面也是错误的
+```java
+Manager m = staff[i]; // ERROR
+```
+因为`Employee`不一定是`Manager`。
+## 动态绑定
+步骤：
+1. 编译器查看已声明类型的对象和方法名。注意这里可能存在多个拥有相同方法名的方法，但是它们的隐含参数类型不同。
+2. 编译器决定拥有哪种参数的方法被使用。方法的名称和参数类型表被称为方法的“签名”，比如，`f(int)`和`f(String)`是两个方法，返回类型不包括在“签名”中。
+3. 如果方法是`private`，`static`，`final`，或者是一个构造方法，则编译器知道需要调用的是哪一个方法，这被称为静态绑定。否则，被调用的方法将会根据隐含参数的实际类型决定，而且动态绑定必须被用在代码运行时间。
+4. 当程序运行并且使用动态绑定去调用一个方法时，虚拟机必须调用实际对象x指向的方法。
+```java
+Employee:
+getName() -> Employee.getName()
+getSalary() -> Employee.getSalary()
+getHireDay() -> Employee.getHireDay()
+raiseSalary(double) -> Employee.raiseSalary(double)
+Manager:
+getName() -> Employee.getName()
+getSalary() -> Manager.getSalary()
+getHireDay() -> Employee.getHireDay()
+raiseSalary(double) -> Employee.raiseSalary(double)
+setBonus(double) -> Manager.setBonus(double)
+```
+程序运行时，`e.getSalary()`
+1. 首先，虚拟机获得类型e的方法表，可能是`Employee`，`Manager`或者`Employee`的其他子类的表。
+2. 然后虚拟机查询`getSalary()`的签名，现在它知道需要调用哪一个方法了。
+3. 最后，虚拟机调用这个方法。
+
+动态绑定的优点：程序不需要修改代码就拥有可扩展性。
+
+## 抽象类
+抽象类是对类更高层的一种描述，它提供了一种规范，规定继承它的类有哪些方法，需要实现哪些功能。
+```java
+abstract class Person
+{
+    private String name;
+    public Person(String n)
+    {
+        name = n;    
+    }
+    public abstract String getDescription();
+    public String getName()
+    {
+        return name;
+    }
+}
+```
+如果继承的子类实现了抽象类的所有方法，那么这个子类将不再是抽象类。抽象类除了抽象方法外也可以有具体的字段和方法。子类中相同的方法都应该放到超类中。
+## `equals`方法
+```java
+class Employee {
+    ...
+    public boolean equals(Object otherObject) {
+        // a quick test to see if the objects are identical
+        // if they refer to a same object.
+        if (this == otherObject) {
+            return true;
+        }
+        // must return false if the explicit parameter is null
+        if(otherObject == null) {
+            return false;
+        }
+        // if the classs don't match, they can't be equal
+        if (getClass() != otherObject.getclass()) {
+            return false;
+        }
+        // now we know otherObject is a non-null Employee
+        Employee other = (Employee) otherObject;
+        // test whether the fields have identical values
+        return Objects.equals(this.name, other.name)
+                && this.salary == other.salary
+                && Object.equals(this.hireDay, other.hireDay);
+    }
+}
+```
+子类中定义`equals`方法时，**首先调用父类中的equals方法**，如果父类中的方法没有通过，这就说明这两个对象不相同，继续比较子类中的字段。
+```java
+class Manager extends Employee {
+    ...
+    public boolean equals(Object otherObject) {
+        if (!super.equals(otherObject)) {
+            return false;
+        }
+        Manager other = (Manager) otherObject;
+        return bonus == bonus;
+    }
+}
+```
+### equals方法的原则
+1. 自身性。对于任何一个非空引用`x`，`x.equals(x)`返回`true`。
+2. 对称性。`x.equals(y)`返回`true`，则`y.equals(x)`返回`true`
+3. 传递性。`x.equals(y)`返回`true`，`y.equals(z)`返回`true`，`x.equals(z)`需要返回`true`。
+4. 持久性。如果`x`和`y`没有改变，那么重复调用`x.equals(y)`应该返回同样的值。
+5. 对于一个非空的引用`x`，`x.equals(null)`应该返回`false`。
+
+有的人使用代码：
+```java
+if (!(otherObject instanceof Employee)) return false;
+```
+违反了第二条原则。
+```
+//e: instance of Employee
+//m: instance of Manager
+e.equals(m) //true
+m.equals(e) //false
+```
+两个场景：
+* 如果子类可以有自己的相等概念，那么对称性要求会强制使用`getClass`测试。
+* 如果在超类中修复了相等的概念，则可以使用`instanceof` 测试并允许不同子类的对象彼此相等。
+比较雇员和经理的例子中，如果我们有两个`Manager`对象有相同的名字，薪资，和雇佣日期，但是奖金不同，我们想让这两个对象不同，则使用`getClass`测试。
+
+但是如果我们使用雇员ID来进行相等测试，相等的概念对于所有子类都适用，则使用`instanceof`进行测试，并声明`Employee.equals`为`final`。
+
+### 完美的`equals`方法
+1. 将显式参数命名为otherObject，稍后可能需要将其强制转换为另一个应该调用其他的变量。
+2. 测试`this`与`otherObject`是否指向同一个对象：
+```java
+if (this == otherObject) return true;
+```
+3. 测试`otherObject`是否为`null`：
+```java
+if (otherObject == null) return false;
+```
+4. 比较this和otherObject的类别：
+    * 如果子类间的equals的意义可以变化，使用getClass测试
+    ```java
+    if (getClass() != otherObject.getClass()) return false;
+    ```
+    * 如果所有子类中equals的意义都相同，可以使用instanceof测试：
+    ```java
+    if (!(otherObject instanceof ClassName)) return false;
+    ```
+5. 转换otherObject为类内变量：
+```java
+ClassName other = (ClassName) otherObject
+```
+6. 比较特定的字段，原始数据字段使用`==`，类字段使用`Objects.equals`，数组字段使用`Arrays.equals`。
+```java
+return field1 == other.field1 && Objects.equals(field2, other.field2) && . . .;
+```
+注意：
+```java
+public class Employee
+{
+    public boolean equals(Employee other)
+    {
+        return Objects.equals(name, other.name)
+        && salary == other.salary
+        && Objects.equals(hireDay, other.hireDay);
+    }
+    . . .
+}
+```
+上面的方法声明显式参数为`Employee`，结果是，它并没有重写`Object`类中的`equals`方法，而是重新定义了一个与之完全不相关的代码。
+重写正确做法：
+```java
+@Override public boolean equals(Object other)
+```
+错误方法：
+```java
+@Override public boolean equals(Employee other)
+```
+因为`Object`根本没有`equals(Employee other)`这个方法，方法的签名是方法名+方法传入的参数。

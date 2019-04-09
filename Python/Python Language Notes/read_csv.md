@@ -1,0 +1,2 @@
+# read_csv
+read_csv takes an encoding option to deal with files in different formats. I mostly use `read_csv('file', encoding = "ISO-8859-1")`, or alternatively `encoding = "utf-8"` for reading, and generally `utf-8` for `to_csv`.

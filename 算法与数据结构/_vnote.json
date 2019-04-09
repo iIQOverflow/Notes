@@ -1,0 +1,38 @@
+{
+    "created_time": "2019-03-11T13:32:30Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-03-11T13:32:39Z",
+            "modified_time": "2019-03-11T13:32:39Z",
+            "name": "快排.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-03-14T12:26:46Z",
+            "modified_time": "2019-03-14T12:28:14Z",
+            "name": "复杂度速查表.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-04-02T06:17:49Z",
+            "modified_time": "2019-04-02T06:18:05Z",
+            "name": "面试常见手撕模板题以及笔试模板总结(附带少数ACM入门算法).md",
+            "tags": [
+            ]
+        }
+    ],
+    "sub_directories": [
+    ],
+    "version": "1"
+}
