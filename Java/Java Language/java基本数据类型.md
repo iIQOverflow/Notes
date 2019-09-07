@@ -7,6 +7,7 @@
 | short | 2bytes   | 16位   |
 | long  | 8bytes   | 64位   |
 * long类型后缀为L，16进制前缀0x，8进制前缀0，二进制前缀0b
+* Integer对象类型不可变，同String
 ## 浮点数（Floating-Point）
 |  类型  | 存储空间 | 二进制 |
 | ------ | ------- | ----- |

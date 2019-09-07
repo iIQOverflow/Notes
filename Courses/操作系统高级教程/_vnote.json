@@ -1,0 +1,28 @@
+{
+    "created_time": "2019-09-04T07:36:16Z",
+    "files": [
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-04T07:36:24Z",
+            "modified_time": "2019-09-04T10:11:48Z",
+            "name": "Lecture2.md",
+            "tags": [
+            ]
+        },
+        {
+            "attachment_folder": "",
+            "attachments": [
+            ],
+            "created_time": "2019-09-06T11:26:05Z",
+            "modified_time": "2019-09-06T11:26:35Z",
+            "name": "思考题 2019.9.6.md",
+            "tags": [
+            ]
+        }
+    ],
+    "sub_directories": [
+    ],
+    "version": "1"
+}
