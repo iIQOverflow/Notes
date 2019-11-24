@@ -22,6 +22,6 @@ P5 solution form x=[x1,x2,...xn],xi=0/1，ENUMERATION（枚举）
 
 b在c之前，b在c之后，只选一个。
 
-take home message
+## take home message
 1. 做问题时，从最简单的case入手。
-2. 基于对问题结构/解的观察设计。
+2. 基于对问题结构/解的观察设计。从复杂到简单，分解成SUB-PROBLEM。
